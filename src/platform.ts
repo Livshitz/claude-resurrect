@@ -7,7 +7,7 @@ export const IS_MAC = process.platform === 'darwin';
 
 export function assertSupported(): void {
   if (!IS_MAC) {
-    console.error('claude-resume currently supports macOS only (Linux/Windows: TODO).');
+    console.error('claude-resurrect currently supports macOS only (Linux/Windows: TODO).');
     process.exit(1);
   }
 }
