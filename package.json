@@ -1,0 +1,21 @@
+{
+  "name": "claude-resume",
+  "version": "0.1.0",
+  "description": "Recover Claude Code sessions abandoned by a crash, reboot, or IDE kill — an interactive TUI picker over the live registry, reboot survivors, and IDE scrollback, with auto-offer on terminal restore. macOS.",
+  "keywords": ["claude", "claude-code", "session", "recovery", "resume", "tui", "crash", "anthropic"],
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": { "claude-resume": "dist/cli.js" },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "os": ["darwin"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  }
+}
