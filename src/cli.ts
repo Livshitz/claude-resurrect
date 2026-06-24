@@ -19,7 +19,7 @@ const HELP = `claude-resurrect — recover Claude Code sessions lost to a crash,
   claude-resurrect init --uninstall    remove hooks (and shell block)
 
 Keys: ↑↓/jk move · enter resume · d drop (never offer again) · r refresh · q quit
-macOS only. https://github.com/  (set CLAUDE_RESURRECT_OFF=1 to disable the shell auto-open)`;
+macOS only · https://github.com/Livshitz/claude-resurrect  (CLAUDE_RESURRECT_OFF=1 disables shell auto-open)`;
 
 async function runPicker(opts: DiscoverOpts) {
   const chosen = await pick(opts, (s) => { tombstoneAdd(s.sid); claim(s.sid); });
