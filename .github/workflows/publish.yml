@@ -1,0 +1,26 @@
+name: publish
+
+# Publishes to npm when you cut a GitHub Release (tag should match package.json version).
+on:
+  release:
+    types: [published]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  id-token: write   # npm provenance (public repo)
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest   # build is cross-platform (tsc); `os:darwin` only gates install
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
