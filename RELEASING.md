@@ -2,14 +2,14 @@
 
 Publishing is automated via GitHub Actions (`.github/workflows/publish.yml`) — there is no manual `npm publish`.
 
+The npm token is **not** a per-repo secret — CI pulls it at publish time from **bodify's secrets store** (`NPM_TOKEN`, app-scoped). The only GitHub secret is `BODIFY_API_KEY`.
+
 ## One-time setup
 
-1. Create an **npm automation token** (npmjs.com → Access Tokens → Generate → *Automation*).
-2. Add it as a repo secret named `NPM_TOKEN`:
-   ```bash
-   gh secret set NPM_TOKEN --repo Livshitz/claude-resurrect
-   ```
-   (npm provenance also requires the repo to be **public** + the package public.)
+```bash
+gh secret set BODIFY_API_KEY --repo Livshitz/claude-resurrect   # the bodify access key
+```
+(`NPM_TOKEN` already lives in bodify; rotate it there, never here. npm provenance also needs the repo + package public.)
 
 ## Cut a release
 

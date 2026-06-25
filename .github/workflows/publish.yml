@@ -1,6 +1,8 @@
 name: publish
 
-# Publishes to npm when you cut a GitHub Release (tag should match package.json version).
+# Publishes to public npm when you cut a GitHub Release (tag should match package.json version).
+# The npm token is NOT a per-repo secret — it's pulled at publish time from bodify's secrets
+# store. The only GitHub secret is BODIFY_API_KEY (the bodify access key).
 on:
   release:
     types: [published]
@@ -21,6 +23,16 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
+      - name: Pull NPM_TOKEN from bodify secrets store
+        env:
+          BODIFY_API_KEY: ${{ secrets.BODIFY_API_KEY }}
+        run: |
+          TOKEN=$(curl -fsS -H "Authorization: Bearer $BODIFY_API_KEY" \
+            "https://bodify.bod.ee/api/apps/9ddba0fb-03bc-4490-8577-5e094b5b6792/env/NPM_TOKEN?environment=prod" \
+            | jq -r '.value')
+          [ -n "$TOKEN" ] && [ "$TOKEN" != "null" ] || { echo "::error::could not fetch NPM_TOKEN from bodify"; exit 1; }
+          echo "::add-mask::$TOKEN"
+          echo "NODE_AUTH_TOKEN=$TOKEN" >> "$GITHUB_ENV"
       - run: npm publish --provenance --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
