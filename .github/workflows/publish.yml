@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   npm:
-    runs-on: ubuntu-latest   # build is cross-platform (tsc); `os:darwin` only gates install
+    runs-on: macos-latest   # package is `os:darwin`, so `npm ci` must run on macOS (EBADPLATFORM on linux)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
