@@ -40,7 +40,7 @@ claude-revive init --shell
 ```
 
 - Adds `SessionStart`/`SessionEnd` hooks to `~/.claude/settings.json` (maintains the registry + tombstones cleanly-closed sessions).
-- `--shell` adds a block to `~/.zshrc` that snapshots live sessions and **auto-opens the picker in restored IDE terminals** (within 30 min of boot). Set `CLAUDE_REVIVE_OFF=1` to disable.
+- `--shell` adds a block to `~/.zshrc` that snapshots live sessions and **auto-opens the picker in restored IDE terminals** (within 1h of boot). Set `CLAUDE_REVIVE_OFF=1` to disable.
 
 Reverse it: `claude-revive init --uninstall`. Both files are backed up (`*.claude-revive.bak`) before any change.
 
