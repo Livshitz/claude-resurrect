@@ -7,7 +7,7 @@ The npm token is **not** a per-repo secret — CI pulls it at publish time from 
 ## One-time setup
 
 ```bash
-gh secret set BODIFY_API_KEY --repo Livshitz/claude-resurrect   # the bodify access key
+gh secret set BODIFY_API_KEY --repo Livshitz/claude-revive   # the bodify access key
 ```
 (`NPM_TOKEN` already lives in bodify; rotate it there, never here. npm provenance also needs the repo + package public.)
 

@@ -7,19 +7,19 @@ import { tombstoneAdd, claim } from './registry';
 import { hookRegister, hookUnregister, hookSync } from './hooks';
 import { init } from './install';
 
-const HELP = `claude-resurrect — recover Claude Code sessions lost to a crash, reboot, or IDE kill.
+const HELP = `claude-revive — recover Claude Code sessions lost to a crash, reboot, or IDE kill.
 
-  claude-resurrect                interactive picker over all recoverable sessions → resume
-  claude-resurrect --here         scope to the current project directory
-  claude-resurrect --active       list currently-LIVE sessions (pre-restart backup)
-  claude-resurrect --grep TERM    pick among sessions mentioning TERM (any time)
-  claude-resurrect [SECONDS]       widen the reboot mtime window (default 300)
+  claude-revive                interactive picker over all recoverable sessions → resume
+  claude-revive --here         scope to the current project directory
+  claude-revive --active       list currently-LIVE sessions (pre-restart backup)
+  claude-revive --grep TERM    pick among sessions mentioning TERM (any time)
+  claude-revive [SECONDS]       widen the reboot mtime window (default 300)
 
-  claude-resurrect init [--shell]      install SessionStart/End hooks (+ --shell: auto-open on restore)
-  claude-resurrect init --uninstall    remove hooks (and shell block)
+  claude-revive init [--shell]      install SessionStart/End hooks (+ --shell: auto-open on restore)
+  claude-revive init --uninstall    remove hooks (and shell block)
 
 Keys: ↑↓/jk move · enter resume · d drop (never offer again) · r refresh · q quit
-macOS only · https://github.com/Livshitz/claude-resurrect  (CLAUDE_RESURRECT_OFF=1 disables shell auto-open)`;
+macOS only · https://github.com/Livshitz/claude-revive  (CLAUDE_REVIVE_OFF=1 disables shell auto-open)`;
 
 async function runPicker(opts: DiscoverOpts) {
   const chosen = await pick(opts, (s) => { tombstoneAdd(s.sid); claim(s.sid); });
@@ -54,8 +54,8 @@ async function main() {
   if (argv.includes('--auto')) {
     // Shell-restore path: only within the post-boot window, scoped to this dir, silent if nothing.
     const boot = bootTime(); const now = Date.now() / 1000;
-    const win = Number(process.env.CLAUDE_RESURRECT_WINDOW) || 1800;
-    if (!process.env.CLAUDE_RESURRECT_FORCE && (!boot || now - boot > win)) return;
+    const win = Number(process.env.CLAUDE_REVIVE_WINDOW) || 3600;
+    if (!process.env.CLAUDE_REVIVE_FORCE && (!boot || now - boot > win)) return;
     opts.cwd = process.cwd();
     if (discover(opts).length === 0) return;
   }

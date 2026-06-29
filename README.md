@@ -1,16 +1,16 @@
-# claude-resurrect
+# claude-revive
 
 Recover Claude Code sessions abandoned by a **crash, reboot, or IDE kill** — not just a session browser, but a *crash-recovery* tool. An interactive TUI picker over everything that was live when things went sideways, with auto-offer on terminal restore.
 
 > macOS only (for now). Node ≥ 18.
 
 ```bash
-npx claude-resurrect          # interactive picker over all recoverable sessions → resume the one you pick
+npx claude-revive          # interactive picker over all recoverable sessions → resume the one you pick
 ```
 
 ## Why
 
-Claude Code's `--resume` lists *past* sessions, but after a Mac reboot or an IDE crash the sessions that were **open in your terminals** are easy to lose. `claude-resurrect` reconstructs them from three sources and unions them:
+Claude Code's `--resume` lists *past* sessions, but after a Mac reboot or an IDE crash the sessions that were **open in your terminals** are easy to lose. `claude-revive` reconstructs them from three sources and unions them:
 
 - **reboot mtime-burst** — every running `claude` flushes its transcript at shutdown; files in a tight window before boot were live;
 - **IDE terminal scrollback** — VSCode/Cursor persist each terminal's buffer, which holds the `--resume <id>` line of idle tabs;
@@ -21,11 +21,11 @@ It filters out compaction artifacts, temp-dir scratch sessions, and empty ones; 
 ## Use
 
 ```bash
-claude-resurrect               # pick over all recoverable sessions, grouped by project
-claude-resurrect --here        # only the current project directory
-claude-resurrect --active      # currently-LIVE sessions (a pre-restart backup)
-claude-resurrect --grep TERM   # pick among sessions that mention TERM
-claude-resurrect 900           # widen the reboot mtime window to 900s
+claude-revive               # pick over all recoverable sessions, grouped by project
+claude-revive --here        # only the current project directory
+claude-revive --active      # currently-LIVE sessions (a pre-restart backup)
+claude-revive --grep TERM   # pick among sessions that mention TERM
+claude-revive 900           # widen the reboot mtime window to 900s
 ```
 
 Keys: **↑↓/jk** move · **enter** resume · **d** drop (never offer again) · **r** refresh · **q** quit. The picker **auto-refreshes** when sessions are resumed/closed in other terminals.
@@ -35,14 +35,14 @@ Keys: **↑↓/jk** move · **enter** resume · **d** drop (never offer again) �
 For the complete experience — a live registry, clean-close detection, and auto-open-on-restore — install globally and run `init`:
 
 ```bash
-npm i -g claude-resurrect
-claude-resurrect init --shell
+npm i -g claude-revive
+claude-revive init --shell
 ```
 
 - Adds `SessionStart`/`SessionEnd` hooks to `~/.claude/settings.json` (maintains the registry + tombstones cleanly-closed sessions).
-- `--shell` adds a block to `~/.zshrc` that snapshots live sessions and **auto-opens the picker in restored IDE terminals** (within 30 min of boot). Set `CLAUDE_RESURRECT_OFF=1` to disable.
+- `--shell` adds a block to `~/.zshrc` that snapshots live sessions and **auto-opens the picker in restored IDE terminals** (within 30 min of boot). Set `CLAUDE_REVIVE_OFF=1` to disable.
 
-Reverse it: `claude-resurrect init --uninstall`. Both files are backed up (`*.claude-resurrect.bak`) before any change.
+Reverse it: `claude-revive init --uninstall`. Both files are backed up (`*.claude-revive.bak`) before any change.
 
 ## How resume works
 

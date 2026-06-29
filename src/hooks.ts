@@ -12,7 +12,7 @@ function claudeAncestor(): { pid: number; cmd: string } | null {
   for (let i = 0; i < 6 && pid > 1; i++) {
     const cmd = psField(pid, 'command');
     if (!cmd) break;
-    if (/claude-resurrect|hook /.test(cmd)) { /* skip ourselves */ }
+    if (/claude-revive|hook /.test(cmd)) { /* skip ourselves */ }
     else if (cmd.includes('claude')) return { pid, cmd };
     const ppid = parseInt(psField(pid, 'ppid'), 10);
     if (!ppid || ppid === pid) break;
